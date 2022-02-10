@@ -2,23 +2,34 @@ package com.example.tempshapes
 
 import android.content.Context
 import android.graphics.*
+import android.graphics.drawable.shapes.OvalShape
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
+import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 
 enum class TOOL {
     PENCIL, ARROW, RECTANGLE, ELLIPSE;
 }
 
-private const val STROKE_WIDTH = 12f // has to be float
+private const val TAG = "MyCanvasView"
+
+private const val STROKE_WIDTH = 10f // has to be float
 
 class MyCanvasView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
+
+    private var _tool = MutableLiveData<TOOL>()
+    val tool: LiveData<TOOL>
+        get() = _tool
 
     private lateinit var extraCanvas: Canvas
     private lateinit var extraBitmap: Bitmap
@@ -29,14 +40,13 @@ class MyCanvasView @JvmOverloads constructor(
     private var currentX = 0f
     private var currentY = 0f
 
-
     private val backgroundColor = ResourcesCompat.getColor(resources, R.color.colorBackground, null)
 
     private val drawColor = ResourcesCompat.getColor(resources, R.color.colorPaint, null)
 
     private val touchTolerance = ViewConfiguration.get(context).scaledTouchSlop
 
-    private var tempRect: RectF = RectF(0f, 0f, 0f, 0f)
+    private var tempRect: RectF = RectF()
 
     // Set up the paint with which to draw.
     private val paint = Paint().apply {
@@ -53,6 +63,10 @@ class MyCanvasView @JvmOverloads constructor(
 
     private var path = Path()
 
+    init {
+        _tool.value = TOOL.PENCIL
+    }
+
     override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldheight: Int) {
         super.onSizeChanged(width, height, oldWidth, oldheight)
 
@@ -62,14 +76,21 @@ class MyCanvasView @JvmOverloads constructor(
         extraCanvas.drawColor(backgroundColor)
     }
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        canvas?.drawBitmap(extraBitmap, 0f, 0f, null)
+        canvas.drawBitmap(extraBitmap, 0f, 0f, null)
         // Draw a frame around the canvas.
-        canvas?.drawRect(tempRect, paint)
+        when (tool.value) {
+            TOOL.RECTANGLE -> canvas.drawRect(tempRect, paint)
+            TOOL.ARROW -> canvas.drawRect(tempRect, paint)
+            TOOL.ELLIPSE -> canvas.drawOval(tempRect, paint)
+            else -> Log.i(TAG, "onDraw: No shape")
+        }
     }
 
     private fun touchStart(x: Float, y: Float) {
+        path.reset()
+        path.moveTo(motionTouchEventX, motionTouchEventY)
         tempRect.left = x
         tempRect.top = y
         tempRect.bottom = y
@@ -88,17 +109,23 @@ class MyCanvasView @JvmOverloads constructor(
             currentX = motionTouchEventX
             currentY = motionTouchEventY
             // Draw the path in the extra bitmap to cache it.
-//            extraCanvas.drawPath(path, paint)
+            if(tool.value == TOOL.PENCIL)  extraCanvas.drawPath(path, paint)
+
             tempRect.bottom = (motionTouchEventY + currentY) / 2
             tempRect.right = (motionTouchEventX + currentX) / 2
-
         }
         invalidate()
     }
 
     private fun touchUp() {
         path.reset()
-        extraCanvas.drawRect(tempRect, paint)
+        Log.i(TAG, "touchUp: $tool")
+        when (tool.value) {
+            TOOL.RECTANGLE -> extraCanvas.drawRect(tempRect, paint)
+            TOOL.ARROW -> extraCanvas.drawRect(tempRect, paint)
+            TOOL.ELLIPSE -> extraCanvas.drawOval(tempRect, paint)
+            else -> Log.i(TAG, "touchUp: No shape")
+        }
         tempRect = RectF()
     }
 
@@ -112,6 +139,10 @@ class MyCanvasView @JvmOverloads constructor(
             MotionEvent.ACTION_UP -> touchUp()
         }
         return true
+    }
+
+    fun selectTool(toolParam: TOOL) {
+        _tool.value = toolParam
     }
 
 }

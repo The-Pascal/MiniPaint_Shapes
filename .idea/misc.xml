@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/chaha/AndroidStudioProjects/TempShapes/app/src/main/res/drawable/deselected_icon.xml" value="0.2703125" />
         <entry key="..\:/Users/chaha/AndroidStudioProjects/TempShapes/app/src/main/res/drawable/selected_icon.xml" value="0.2703125" />
         <entry key="..\:/Users/chaha/AndroidStudioProjects/TempShapes/app/src/main/res/drawable/status_bar_bg.xml" value="0.2703125" />
         <entry key="..\:/Users/chaha/AndroidStudioProjects/TempShapes/app/src/main/res/layout/activity_main.xml" value="0.2" />
