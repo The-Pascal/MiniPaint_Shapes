@@ -8,6 +8,10 @@ import android.view.View
 import android.view.ViewConfiguration
 import androidx.core.content.res.ResourcesCompat
 
+enum class TOOL {
+    PENCIL, ARROW, RECTANGLE, ELLIPSE;
+}
+
 private const val STROKE_WIDTH = 12f // has to be float
 
 class MyCanvasView @JvmOverloads constructor(

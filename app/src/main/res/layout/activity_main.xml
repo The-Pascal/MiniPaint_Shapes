@@ -7,6 +7,7 @@
     tools:context=".MainActivity">
 
     <com.example.tempshapes.MyCanvasView
+        android:id="@+id/myCanvasView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -14,13 +15,39 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:text="@string/app_name"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:gravity="center"
+        android:layout_marginTop="30dp"
+        android:padding="5dp"
+        android:background="@drawable/options_bg"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:src="@drawable/pencil_icon"
+            app:tint="@color/black"
+            android:background="@drawable/selected_icon"
+            style="@style/single_option_style" />
+
+        <ImageView
+            style="@style/single_option_style"
+            android:src="@drawable/arrow_icon" />
+
+        <ImageView
+            style="@style/single_option_style"
+            android:src="@drawable/rectangle_icon" />
+
+        <ImageView
+            style="@style/single_option_style"
+            android:src="@drawable/ellipse_icon" />
+
+        <ImageView
+            style="@style/single_option_style"
+            android:src="@drawable/color_palette_icon" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
