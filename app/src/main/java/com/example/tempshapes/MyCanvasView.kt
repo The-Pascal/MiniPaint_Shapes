@@ -29,7 +29,7 @@ data class Line(
 
 private const val TAG = "MyCanvasView"
 
-private const val STROKE_WIDTH = 10f // has to be float
+private const val STROKE_WIDTH = 10f
 
 class MyCanvasView @JvmOverloads constructor(
     context: Context,
@@ -78,6 +78,7 @@ class MyCanvasView @JvmOverloads constructor(
         strokeWidth = STROKE_WIDTH // default: Hairline-width (really thin)
     }
 
+    // Path for line
     private var path = Path()
 
     init {
@@ -89,6 +90,7 @@ class MyCanvasView @JvmOverloads constructor(
     override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldheight: Int) {
         super.onSizeChanged(width, height, oldWidth, oldheight)
 
+        // recycle extra bitmap
         if (::extraBitmap.isInitialized) extraBitmap.recycle()
         extraBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         extraCanvas = Canvas(extraBitmap)
@@ -98,7 +100,8 @@ class MyCanvasView @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         canvas.drawBitmap(extraBitmap, 0f, 0f, null)
-        // Draw a frame around the canvas.
+
+        // Handle different shapes
         when (tool.value) {
             TOOL.RECTANGLE -> canvas.drawRect(tempRect, paint)
             TOOL.ARROW -> drawArrowLine(canvas)
@@ -107,6 +110,7 @@ class MyCanvasView @JvmOverloads constructor(
         }
     }
 
+    // draw arrow line - includes arrow head
     private fun drawArrowLine(canvas: Canvas) {
         val dx: Float = tempArrow.stopX - tempArrow.startX
         val dy: Float = tempArrow.stopY - tempArrow.startY
@@ -132,6 +136,7 @@ class MyCanvasView @JvmOverloads constructor(
         )
     }
 
+    // when user starts to draw
     private fun touchStart(x: Float, y: Float) {
         path.reset()
         path.moveTo(motionTouchEventX, motionTouchEventY)
@@ -151,6 +156,7 @@ class MyCanvasView @JvmOverloads constructor(
         currentY = motionTouchEventY
     }
 
+    // when user is continuing drawing
     private fun touchMove() {
         val dx = abs(motionTouchEventX - currentX)
         val dy = abs(motionTouchEventY - currentY)
@@ -165,6 +171,7 @@ class MyCanvasView @JvmOverloads constructor(
             )
             currentX = motionTouchEventX
             currentY = motionTouchEventY
+
             // Draw the path in the extra bitmap to cache it.
             if (tool.value == TOOL.PENCIL) extraCanvas.drawPath(path, paint)
 
@@ -182,18 +189,22 @@ class MyCanvasView @JvmOverloads constructor(
         invalidate()
     }
 
+    // when user releases the touch
     private fun touchUp() {
-        path.reset()
+        // cache on the extra canvas
         when (tool.value) {
             TOOL.RECTANGLE -> extraCanvas.drawRect(tempRect, paint)
             TOOL.ARROW -> drawArrowLine(extraCanvas)
             TOOL.ELLIPSE -> extraCanvas.drawOval(tempRect, paint)
             else -> Log.i(TAG, "touchUp: No shape")
         }
+        // reset all previous references of drawings
+        path.reset()
         tempRect = RectF()
         tempArrow = Line()
     }
 
+    // Handle touch events
     override fun onTouchEvent(event: MotionEvent): Boolean {
         motionTouchEventX = event.x
         motionTouchEventY = event.y
@@ -213,6 +224,7 @@ class MyCanvasView @JvmOverloads constructor(
     fun selectColor(color: Int) {
         paint.color = color
         _selectedColor.value = color
+        _showPaletteBool.value = false
     }
 
     fun showPalette() {
