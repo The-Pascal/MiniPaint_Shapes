@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View"/>
         <variable
             name="myCanvasData"
             type="com.example.tempshapes.MyCanvasView" />
+
         <variable
             name="tool"
             type="com.example.tempshapes.TOOL" />
@@ -27,48 +29,90 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
+            android:id="@+id/options_linear_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_marginTop="30dp"
-            android:padding="5dp"
             android:background="@drawable/options_bg"
+            android:gravity="center"
             android:orientation="horizontal"
+            android:padding="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:src="@drawable/pencil_icon"
+                style="@style/single_option_style"
                 android:onClick="@{() -> myCanvasData.selectTool(tool.PENCIL)}"
+                android:src="@drawable/pencil_icon"
                 app:activeTool="@{myCanvasData.tool}"
-                app:currTool="@{tool.PENCIL}"
-                style="@style/single_option_style" />
+                app:currTool="@{tool.PENCIL}" />
 
             <ImageView
                 style="@style/single_option_style"
                 android:onClick="@{() -> myCanvasData.selectTool(tool.ARROW)}"
+                android:src="@drawable/arrow_icon"
                 app:activeTool="@{myCanvasData.tool}"
-                app:currTool="@{tool.ARROW}"
-                android:src="@drawable/arrow_icon" />
+                app:currTool="@{tool.ARROW}" />
 
             <ImageView
                 style="@style/single_option_style"
                 android:onClick="@{() -> myCanvasData.selectTool(tool.RECTANGLE)}"
+                android:src="@drawable/rectangle_icon"
                 app:activeTool="@{myCanvasData.tool}"
-                app:currTool="@{tool.RECTANGLE}"
-                android:src="@drawable/rectangle_icon" />
+                app:currTool="@{tool.RECTANGLE}" />
 
             <ImageView
                 style="@style/single_option_style"
                 android:onClick="@{() -> myCanvasData.selectTool(tool.ELLIPSE)}"
+                android:src="@drawable/ellipse_icon"
                 app:activeTool="@{myCanvasData.tool}"
-                app:currTool="@{tool.ELLIPSE}"
-                android:src="@drawable/ellipse_icon" />
+                app:currTool="@{tool.ELLIPSE}" />
 
             <ImageView
                 style="@style/single_option_style"
+                android:onClick="@{() -> myCanvasData.showPalette()}"
+                app:showPalette="@{myCanvasData.showPaletteBool}"
+                app:selectedColor="@{myCanvasData.selectedColor}"
                 android:src="@drawable/color_palette_icon" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/options_bg"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="9dp"
+            android:visibility="@{myCanvasData.showPaletteBool ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="@id/options_linear_layout"
+            app:layout_constraintTop_toBottomOf="@id/options_linear_layout">
+
+            <ImageView
+                style="@style/color_palette_style"
+                android:onClick="@{() -> myCanvasData.selectColor(@color/colorPaintRed)}"
+                android:src="@drawable/color_bg"
+                app:tint="@color/colorPaintRed"/>
+
+            <ImageView
+                style="@style/color_palette_style"
+                android:onClick="@{() -> myCanvasData.selectColor(@color/colorPaintGreen)}"
+                android:src="@drawable/color_bg"
+                app:tint="@color/colorPaintGreen"/>
+
+            <ImageView
+                style="@style/color_palette_style"
+                android:onClick="@{() -> myCanvasData.selectColor(@color/colorPaintBlue)}"
+                android:src="@drawable/color_bg"
+                app:tint="@color/colorPaintBlue"/>
+
+            <ImageView
+                style="@style/color_palette_style"
+                android:onClick="@{() -> myCanvasData.selectColor(@color/colorPaintBlack)}"
+                android:src="@drawable/color_bg"
+                app:tint="@color/black"/>
+
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

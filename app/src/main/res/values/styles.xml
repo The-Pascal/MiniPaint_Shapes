@@ -8,4 +8,11 @@
         <item name="android:layout_marginStart">@dimen/left_margin_icon</item>
         <item name="android:layout_marginEnd">@dimen/right_margin_icon</item>
     </style>
+
+    <style name="color_palette_style">
+        <item name="android:layout_height">28dp</item>
+        <item name="android:layout_width">28dp</item>
+        <item name="android:layout_marginStart">0dp</item>
+        <item name="android:layout_marginEnd">12dp</item>
+    </style>
 </resources>

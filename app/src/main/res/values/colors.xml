@@ -9,6 +9,8 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="colorBackground">#FFFFFF</color>
-    <color name="colorPaint">#000000</color>
-
+    <color name="colorPaintBlack">#000000</color>
+    <color name="colorPaintBlue">#0078DE</color>
+    <color name="colorPaintGreen">#007F00</color>
+    <color name="colorPaintRed">#FB0008</color>
 </resources>

@@ -17,3 +17,15 @@ fun setActive(imageView: ImageView, activeTool: TOOL?, currTool: TOOL) {
         }
     }
 }
+
+@BindingAdapter("showPalette", "selectedColor")
+fun showPalette(imageView: ImageView, showPalette:Boolean?, color:Int) {
+    imageView.setColorFilter(color)
+    showPalette?.let {
+        if (showPalette) {
+            imageView.setBackgroundResource(R.drawable.selected_icon)
+        } else {
+            imageView.setBackgroundResource(R.drawable.deselected_icon)
+        }
+    }
+}
