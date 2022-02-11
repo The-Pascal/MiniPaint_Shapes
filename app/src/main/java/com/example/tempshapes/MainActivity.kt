@@ -1,7 +1,7 @@
 package com.example.tempshapes
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.example.tempshapes.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

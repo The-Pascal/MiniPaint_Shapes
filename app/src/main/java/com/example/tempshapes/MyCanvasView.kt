@@ -1,5 +1,6 @@
 package com.example.tempshapes
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
@@ -205,6 +206,7 @@ class MyCanvasView @JvmOverloads constructor(
     }
 
     // Handle touch events
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
         motionTouchEventX = event.x
         motionTouchEventY = event.y

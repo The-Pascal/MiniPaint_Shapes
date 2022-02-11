@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">TempShapes</string>
+    <string name="app_name">PaintAssignment</string>
+    <string name="icon">Icon in toolbar</string>
+    <string name="color">color in color palette</string>
 </resources>

@@ -4,22 +4,23 @@ import android.graphics.Color
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 
-@BindingAdapter("activeTool","currTool")
+// Adapter for floating toolbar
+@BindingAdapter("activeTool", "currTool")
 fun setActive(imageView: ImageView, activeTool: TOOL?, currTool: TOOL) {
     activeTool?.let {
-        if(it==currTool) {
+        if (it == currTool) {
             imageView.setBackgroundResource(R.drawable.selected_icon)
             imageView.setColorFilter(Color.BLACK)
-        }
-        else {
+        } else {
             imageView.setBackgroundResource(R.drawable.deselected_icon)
-            imageView.setColorFilter(null)
+            imageView.colorFilter = null
         }
     }
 }
 
+// Adapter for color palette
 @BindingAdapter("showPalette", "selectedColor")
-fun showPalette(imageView: ImageView, showPalette:Boolean?, color:Int) {
+fun showPalette(imageView: ImageView, showPalette: Boolean?, color: Int) {
     imageView.setColorFilter(color)
     showPalette?.let {
         if (showPalette) {
